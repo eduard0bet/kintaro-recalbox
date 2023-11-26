@@ -1,27 +1,61 @@
-#!/usr/bin/python -u
-# Copyright 2017 Michael Kirsch
+#!/usr/bin/python -u                                                                                                                                      
+#                                      ▄▄= _╓_
+#                                    ╓██▄▓██████▄_
+#                                   j██████████████▄
+#                                   ╫████████████▀"
+#                                   ╫█████████╙
+#                                 ,▄▓███████▓,
+#                               ▄██████████████▄
+#                              ª▀▀▀▀▀▀▀▀▀▀▀▀████H
+#                         _,▄▄▓▓██████████▓▓████Ñ
+#                     ,▄██████████████████████████▓▄_
+#                  _▄█████████████████████████████████▄_
+#                 ▄██████████████████████████████████████╓
+#               ╓█████████████^╟██████████████████████████▓_
+#              ╔█████████████  ▓████████████████████████████▄
+#             ╔█████▀▀▀╙╙""`   ````""╙╙▀▀▀████████████╕'█████▄
+#            ╓███,▄▄H                        └╙▀███████_▐█████╕
+#            ██████▌  ▄▓▀▀▄╓          _╓▄▄▄▄╖_    ╙╙███▌ ██████_
+#           ╫█████▌  ²╙  _ ╙▀       ▓▀╙"    '█H      _╙Ñ ▓█████▓
+#          ▐██████      ▓██_ ,,        ▄█▌_  ``      ╟█▄|███████▒
+#          ██████Ñ      `╙^_█╙╙▀▓▄    '███`          ╚███████████╕
+#         ╟██████          `"    `                   [████████████
+#        ╓██████▌     ▄▄▓█▓▀▀▀▀▀▀▓φ▄▄,_              [█████████████
+#        ▓██████▌      ╟███▄╓,_____,,╠███▓▄▄▄        j██████████████
+#       ║███████▌      '█████████████████▓           ▐███████████████╖
+#      ╓█████████_      `████╙"]█▀╙"'╙██╜            ║█████████████████▄
+#      ███████████_       ╙▓▄╓,╙`_,▄▓▀^              ╫█████████████```
+#     ▓████████████_         '╙╙╙╙"                 _██████████████▌
+#   _▓██████████████▄_     ª█      ,▄@            _▄████████████████H
+#  »▓█████▀▀▀▀▀███████▌,    ╙▀▓▓▓▀▀╙`          _▄▓▀`╫████████▀╙▀▀▀▀██_
+#              ╚█████▀╙╙▀▓▄,__           _,,▄▓▀▀"  ,██████▀"
+#               ╙▀"        "╙▀▀▀▀▀▀▀▀▀▀▀▀▀╙"       ╙▀╙"                                                                                                                                                                                                                   
+# Copyright 2016 Kintaro Co.                                                                                                                                                     
+# Copyright 2018 Michael Kirsch 
+# Copyright 2023 Eduardo Betancourt
 
 import time
 import os
 import RPi.GPIO as GPIO
 import logging
 
+
 class SNES:
 
     def __init__(self):
-        # GPIOs
+        # GPIO pins
         self.led_pin = 7
         self.fan_pin = 8
         self.reset_pin = 3
         self.power_pin = 5
         self.check_pin = 10
 
-        # vars
+        # Variables
         self.fan_hysteresis = 20
         self.fan_starttemp = 60
         self.debounce_time = 0.1
 
-        # path
+        # Path for temperature reading
         self.temp_command = 'cat /sys/class/thermal/thermal_zone0/temp'
 
         # Set up logging
@@ -31,7 +65,7 @@ class SNES:
             format='%(asctime)s - %(levelname)s - %(message)s'
         )
 
-        # Set the GPIOs
+        # Set up GPIO pins
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
         GPIO.setup(self.led_pin, GPIO.OUT)
@@ -55,30 +89,31 @@ class SNES:
         logging.debug('Reset button interrupt triggered.')
         if GPIO.input(self.reset_pin) == GPIO.LOW:
             time.sleep(self.debounce_time)
-            while GPIO.input(self.reset_pin) == GPIO.LOW:
-                self.blink(15, 0.1)
-                os.system("reboot")
+            self.blink(3, 0.1)
+            logging.info('Rebooting the system.')
+            os.system("shutdown -r now")
         logging.getLogger().handlers[0].flush()
 
     def pcb_interrupt(self, channel):
-        GPIO.cleanup()  # when the pcb is pulled clean all the used GPIO pins
+        GPIO.cleanup()  # Clean up GPIO pins when PCB is pulled
 
-    def temp(self):     #returns the gpu temoperature
+    def temp(self):  # Read GPU temperature
         res = os.popen(self.temp_command).readline()
         return float((res.replace("temp=", "").replace("'C\n", "")))
 
-    def pwm_fancontrol(self,hysteresis, starttemp, temp):
-        perc = 100.0 * ((temp - (starttemp - hysteresis)) / (starttemp - (starttemp - hysteresis)))
-        perc=min(max(perc, 0.0), 100.0)
+    def pwm_fancontrol(self, hysteresis, starttemp, temp):
+        perc = 100.0 * ((temp - (starttemp - hysteresis)) /
+                        (starttemp - (starttemp - hysteresis)))
+        perc = min(max(perc, 0.0), 100.0)
         self.pwm.ChangeDutyCycle(float(perc))
 
-    def led(self,status):  #toggle the led on of off
-        if status == 0:       #the led is inverted
+    def led(self, status):  # Toggle the LED on or off
+        if status == 0:  # The LED is inverted
             GPIO.output(self.led_pin, GPIO.LOW)
         if status == 1:
             GPIO.output(self.led_pin, GPIO.HIGH)
 
-    def blink(self,amount,interval): #blink the led
+    def blink(self, amount, interval):  # Blink the LED
         for x in range(amount):
             self.led(1)
             time.sleep(interval)
@@ -86,26 +121,38 @@ class SNES:
             time.sleep(interval)
 
     def check_fan(self):
-        self.pwm_fancontrol(self.fan_hysteresis,self.fan_starttemp,self.temp())  # fan starts at 60 degrees and has a 5 degree hysteresis
+        # Fan starts at 60 degrees and has a 5 degree hysteresis
+        self.pwm_fancontrol(self.fan_hysteresis,
+                            self.fan_starttemp, self.temp())
 
     def attach_interrupts(self):
-        if GPIO.input(self.check_pin) == GPIO.LOW:  # check if there is an pcb and if so attach the interrupts
-            GPIO.add_event_detect(self.check_pin, GPIO.RISING,callback=self.pcb_interrupt)  # if not the interrupt gets attached
-            if GPIO.input(self.power_pin) == GPIO.HIGH: #when the system gets startet in the on position it gets shutdown
+        # Check if there is a PCB and if so, attach the interrupts
+        if GPIO.input(self.check_pin) == GPIO.LOW:
+            # If not, the interrupt gets attached
+            GPIO.add_event_detect(
+                self.check_pin, GPIO.RISING, callback=self.pcb_interrupt)
+            # When the system starts in the ON position, it gets shut down
+            if GPIO.input(self.power_pin) == GPIO.HIGH:
                 os.system("shutdown -h now")
             else:
                 self.led(1)
-                GPIO.add_event_detect(self.reset_pin, GPIO.FALLING, callback=self.reset_interrupt)
-                GPIO.add_event_detect(self.power_pin, GPIO.RISING, callback=self.power_interrupt)
-        else:       #no pcb attached so lets exit
+                GPIO.add_event_detect(
+                    self.reset_pin, GPIO.FALLING, callback=self.reset_interrupt)
+                GPIO.add_event_detect(
+                    self.power_pin, GPIO.RISING, callback=self.power_interrupt)
+        else:  # No PCB attached, so let's exit
             GPIO.cleanup()
             exit()
 
+
+# Create an instance of the SNES class
 snes = SNES()
+# Attach the interrupts
 snes.attach_interrupts()
 
-while True:
-    time.sleep(5)
-    snes.led(1)
-    snes.check_fan()
+# Turn on the LED at the beginning
+snes.led(1)
 
+while True:
+    time.sleep(5)  # Wait for 5 seconds
+    snes.check_fan()  # Control the fan
