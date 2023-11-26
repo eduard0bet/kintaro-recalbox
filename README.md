@@ -11,6 +11,7 @@ This is the official Kintaro script for Recalbox.
 Changelog: 
 
 v1.6.EB | 08/08/2023 
+
 I make an uodate on some script mainly on .sh file to make it work with recalbox 9.0
 it works flawless from first install and reboot.
 remember maintain the power button 'ON" on the first reboot o power supply connect.
@@ -19,6 +20,7 @@ Issues:
 Some minor actions with the reset buttons
 
 v1.6.2 stable | 11/26/2023  | tested on Recalbox 9.1
+
 Fixed some issues with the reset button.
 Fixed issue when the script make the led never stop blinking.
 Cleaning the code and delete unused code.
