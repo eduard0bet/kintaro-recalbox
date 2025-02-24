@@ -99,7 +99,7 @@ class SNES:
 
     def temp(self):  # Read GPU temperature
         res = os.popen(self.temp_command).readline()
-        return float((res.replace("temp=", "").replace("'C\n", "")))
+        return float(res.strip()) / 1000.0  # Convert millidegrees to degrees
 
     def pwm_fancontrol(self, hysteresis, starttemp, temp):
         perc = 100.0 * ((temp - (starttemp - hysteresis)) /
