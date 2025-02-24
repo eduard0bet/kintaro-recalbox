@@ -28,12 +28,14 @@ mount -o remount,rw /
 echo "Clonando repositorio..."
 TMP_DIR=$(mktemp -d)
 cd $TMP_DIR
-if git clone https://github.com/eduard0bet/kintaro-recalbox.git; then
+if git clone -b release https://github.com/eduard0bet/kintaro-recalbox.git; then
     echo -e "${GREEN}Repositorio clonado exitosamente${NC}"
 else
     echo -e "${RED}Error al clonar repositorio${NC}"
     exit 1
 fi
+
+cd kintaro-recalbox
 
 # Crear estructura de directorios
 echo "Creando directorios..."
@@ -41,8 +43,8 @@ mkdir -p /opt/Kintaro
 
 # Copiar archivos
 echo "Copiando archivos..."
-cp -f kintaro-recalbox/kintaro.py /opt/Kintaro/
-cp -f kintaro-recalbox/S100kintaro.sh /etc/init.d/
+cp -f kintaro.py /opt/Kintaro/
+cp -f S100kintaro.sh /etc/init.d/
 
 # Establecer permisos
 echo "Configurando permisos..."
