@@ -15,21 +15,21 @@ This is the official Kintaro script for Recalbox.
 
 v1.6.4 stable | 02/23/2025  | tested on Recalbox 9.2.3 pulstar
 
-Update the .sh file to improve loging and status
-Improved the fan meassure in temperature
-Improved the kintaro.py file some minor tweaks
+- Update the .sh file to improve loging and status
+- Improved the fan meassure in temperature
+- Improved the kintaro.py file some minor tweaks
 
 v1.6.3 stable | 11/26/2023  | tested on Recalbox 9.1
 
-Fixed some issues with the reset button.
-Fixed issue when the script make the led never stop blinking.
-Cleaning the code and delete unused code.
+- Fixed some issues with the reset button.
+- Fixed issue when the script make the led never stop blinking.
+- Cleaning the code and delete unused code.
 
 v1.6.2 | 08/08/2023 
 
-I make an update on some script mainly on .sh file to make it work with recalbox 9.0
-it works flawless from first install and reboot.
-remember maintain the power button 'ON" on the first reboot o power supply connect.
+- I make an update on some script mainly on .sh file to make it work with recalbox 9.0
+- it works flawless from first install and reboot.
+- remember maintain the power button 'ON" on the first reboot o power supply connect.
 
 ## Issues:
 Let me know.
@@ -42,6 +42,8 @@ Let me know.
 - Compatible with RecalBox 9.0
 
 ## Installation
+
+-  THE POWER BUTTON HAS TO BE IN "ON" POSITION IN SCRIPT INSTALLATION
 
 ### Quick Install (Recommended)
 
