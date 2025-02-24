@@ -1,10 +1,10 @@
 # Kintaro for Recalbox v9.0+
 
-Version 1.6.4 stable
+Version 1.7.0 stable
 
-Tested on Super Kuma 9000
-tested on Raspberry Pi3 B
-tested on Recalbox 9.2.3 pulstar
+- Tested on Super Kuma 9000
+- tested on Raspberry Pi3 B
+- tested on Recalbox 9.2.3 pulstar
 
 Creator: Kintaro
 Author: Michael Kirsch
