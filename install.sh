@@ -69,6 +69,7 @@ if [ -f /opt/Kintaro/kintaro.py ] && [ -f /etc/init.d/S100kintaro.sh ]; then
     echo -e "${GREEN}    ░███▒▓███░ ▒██▓░░███░ ░███░ ▒██▓░░███░░░███▒░███░  ▒███▒░▓███░░   ${NC}"
     echo -e "${GREEN}    ░▓██░░░███▒▒██▓░░███░ ░▓██░ ░▓███▒░▓███▓▓██▒░███░   ░▒█████▒░░    ${NC}"
     echo -e "${GREEN}                                                                      ${NC}"
+    echo -e "${GREEN}eduardo@koudrs.com | www.koudrs.com${NC}"
     echo -e "${GREEN}Installation completed successfully${NC}"
     echo -e "${GREEN}System will reboot in 5 seconds...${NC}"
     sleep 5
