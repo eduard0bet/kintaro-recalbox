@@ -30,8 +30,8 @@ cd $TMP_DIR
 
 # Descargar archivos
 echo "Descargando archivos..."
-curl -sSL https://raw.githubusercontent.com/eduard0bet/kintaro-recalbox/release/kintaro.py -o kintaro.py
-curl -sSL https://raw.githubusercontent.com/eduard0bet/kintaro-recalbox/release/S100kintaro.sh -o S100kintaro.sh
+curl -sSL https://raw.githubusercontent.com/eduard0bet/kintaro-recalbox/refs/heads/release/Kintaro/kintaro.py -o kintaro.py
+curl -sSL https://raw.githubusercontent.com/eduard0bet/kintaro-recalbox/refs/heads/release/S100kintaro.sh -o S100kintaro.sh
 
 if [ ! -f kintaro.py ] || [ ! -f S100kintaro.sh ]; then
     echo -e "${RED}Error al descargar los archivos${NC}"
