@@ -7,7 +7,8 @@ tested on Raspberry Pi3 B
 tested on Recalbox 9.2.3 pulstar
 
 Creator: Kintaro
-Author: Michael Kirsch & Eduardo Betancourt
+Author: Michael Kirsch
+Maintainer: Eduardo Betancourt
 This is the official Kintaro script for Recalbox.
 
 ## Changelog: 
