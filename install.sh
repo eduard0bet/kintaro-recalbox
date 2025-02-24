@@ -24,18 +24,19 @@ fi
 echo "Montando sistema en modo escritura..."
 mount -o remount,rw /
 
-# Crear directorio temporal y clonar repositorio
-echo "Clonando repositorio..."
+# Crear directorio temporal
 TMP_DIR=$(mktemp -d)
 cd $TMP_DIR
-if git clone -b release https://github.com/eduard0bet/kintaro-recalbox.git; then
-    echo -e "${GREEN}Repositorio clonado exitosamente${NC}"
-else
-    echo -e "${RED}Error al clonar repositorio${NC}"
+
+# Descargar archivos
+echo "Descargando archivos..."
+curl -sSL https://raw.githubusercontent.com/eduard0bet/kintaro-recalbox/release/kintaro.py -o kintaro.py
+curl -sSL https://raw.githubusercontent.com/eduard0bet/kintaro-recalbox/release/S100kintaro.sh -o S100kintaro.sh
+
+if [ ! -f kintaro.py ] || [ ! -f S100kintaro.sh ]; then
+    echo -e "${RED}Error al descargar los archivos${NC}"
     exit 1
 fi
-
-cd kintaro-recalbox
 
 # Crear estructura de directorios
 echo "Creando directorios..."
